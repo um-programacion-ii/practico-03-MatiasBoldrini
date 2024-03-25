@@ -9,11 +9,9 @@ public class Despensa {
     }
     public void getIngrediente(Ingrediente ingrediente, int cantidad){
             for (Ingrediente ingredienteList: this.ingredientes) {
-                if (ingredienteList != null) {
                     if (ingredienteList.getNombre() == ingrediente.getNombre()){
                         ingredienteList.sacar(cantidad);
                     }
-                }
 
             }
         }

@@ -1,5 +1,4 @@
-import entity.Despensa;
-import entity.Ingrediente;
+import entity.*;
 
 public class Main {
     public Main() {
@@ -23,6 +22,30 @@ public class Main {
         // Quitar ingredientes justos
         despensa.getIngrediente(ingrediente2,20);
         System.out.println(despensa.toString());
+        System.out.println("============== EJERCICIO 3 ===============");
+
+        Ingrediente huevo = new Ingrediente("huevo", 1);
+        Ingrediente agua = new Ingrediente("agua", 200);
+        Ingrediente[] listaIngredientes = new Ingrediente[2];
+        listaIngredientes[0] = huevo;
+        listaIngredientes[1] = agua;
+        HuevoDuro huevoDuro = new HuevoDuro(10,listaIngredientes,"poner un huevo en agua hirviendo durante 10 minutos");
+        System.out.println(huevoDuro.toString());
+
+        Ingrediente[] listaIngredientes1 = new Ingrediente[2];
+        Ingrediente milanesa = new Ingrediente("milanesa", 1);
+        Ingrediente aceite = new Ingrediente("aceite", 1);
+        listaIngredientes1[0] = milanesa;
+        listaIngredientes1[1] = aceite;
+        Milanesa milanesaReceta = new Milanesa(15,listaIngredientes1,"Freír milanesa");
+        System.out.println(milanesaReceta.toString());
+
+        Ingrediente[] listaIngredientes2 = new Ingrediente[1];
+        Ingrediente costeleta = new Ingrediente("costeleta", 1);
+        listaIngredientes2[0] = costeleta;
+        Costeleta costeletaReceta= new Costeleta(10,listaIngredientes2,"Cocinar Costelet apor 10 minutos");
+        System.out.println(costeletaReceta.toString());
+
     }
 }
 

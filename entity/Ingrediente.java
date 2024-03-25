@@ -1,6 +1,5 @@
 package entity;
 
-import java.awt.*;
 
 public class Ingrediente {
     private String nombre;
@@ -29,10 +28,15 @@ public class Ingrediente {
         this.nombre = nombre;
         this.cantidad = cantidad;
     }
+
     @Override
-    public String toString(){
-        return ("Ingredientente: "  +this.nombre + " Cantidad: " + this.cantidad);
+    public String toString() {
+        return "Ingrediente{" +
+                "nombre='" + nombre + '\'' +
+                ", cantidad=" + cantidad +
+                '}';
     }
+
     public void sacar(int cantidad){
         if ( this.cantidad-cantidad >= 0){
             this.cantidad-=cantidad;
