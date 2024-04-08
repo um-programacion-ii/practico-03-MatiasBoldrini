@@ -1,7 +1,5 @@
 package service;
 
-import entity.Despensa;
-import entity.Ingrediente;
 import entity.Receta;
 
 public class Chef {
