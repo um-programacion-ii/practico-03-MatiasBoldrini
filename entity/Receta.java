@@ -42,7 +42,7 @@ public class Receta {
         for (Ingrediente ingredienteList: this.ingredientes) {
             if(ingredienteList != null){
 
-            finalStr+=ingredienteList.getCantidad() + " " + ingredienteList.getNombre()+", ";
+            finalStr += ingredienteList.getCantidad() + " " + ingredienteList.getNombre()+", ";
             }
         }
         return finalStr;
