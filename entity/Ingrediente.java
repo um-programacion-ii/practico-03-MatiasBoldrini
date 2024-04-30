@@ -1,9 +1,20 @@
 package entity;
 
 
-public class Ingrediente {
+import exceptions.StockAgotadoException;
+import interfaces.Cocinable;
+
+public class Ingrediente implements Cocinable {
     private String nombre;
     private int cantidad;
+
+    public Ingrediente() {
+    }
+
+    public Ingrediente(String nombre, int cantidad) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
 
     public String getNombre() {
         return nombre;
@@ -14,40 +25,30 @@ public class Ingrediente {
     }
 
     public int getCantidad() {
-        return cantidad;
+        return this.cantidad;
     }
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Ingrediente() {
-    }
-
-    public Ingrediente(String nombre, int cantidad) {
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-    }
-
     @Override
     public String toString() {
-        return "Ingrediente{" +
-                "nombre='" + nombre + '\'' +
-                ", cantidad=" + cantidad +
-                '}';
+        return "Ingrediente{" + "nombre='" + nombre + '\'' + ", cantidad=" + cantidad + '}';
     }
 
-    public void sacar(int cantidad){
-        if ( this.cantidad-cantidad >= 0){
-            this.cantidad-=cantidad;
-        }
-        else {
-            System.out.println("Intentaste sacar " + cantidad + " " + this.nombre + "/s pero solo quedan " + this.cantidad);
-        }
-    }
-    public void addIngrediente(){
-        this.cantidad+=1;
+
+    public void addIngrediente() {
+        this.cantidad += 1;
     }
 
+
+    @Override
+    public void consumir(int cantidad) throws StockAgotadoException {
+        if (this.cantidad < cantidad) {
+            throw new StockAgotadoException("Quisiste sacar más " + this.nombre + " (" + cantidad + ") del que hay en stock (" + this.cantidad + ")");
+        }
+        this.cantidad -= cantidad;
+    }
 }
 

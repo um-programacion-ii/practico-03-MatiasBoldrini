@@ -1,50 +1,84 @@
 package entity;
 
+import exceptions.SinVidaUtilException;
+import exceptions.StockAgotadoException;
+import interfaces.Cocinable;
+import interfaces.Despensable;
+import interfaces.Reutilizable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class Despensa {
-    private Ingrediente[] ingredientes = new Ingrediente[20];
-    private int cantidadDeIngredientes = 0;
-    public void addIngrediente(Ingrediente ingrediente){
-        this.ingredientes[this.cantidadDeIngredientes] = ingrediente;
-        this.cantidadDeIngredientes ++;
-    }
-
-    public Ingrediente[] getIngredientes() {
-        return this.ingredientes;
-    }
-
-    public void getIngrediente(Ingrediente ingrediente, int cantidad){
-            for (Ingrediente ingredienteList:this.ingredientes) {
-                    if (ingredienteList != null && ingredienteList.getNombre().equals(ingrediente.getNombre())){
-                        ingredienteList.sacar(cantidad);
-                    }
-
-            }
-        }
+    private Map<String, Despensable> despensables = new HashMap<>();
 
     public Despensa() {
-        this.cantidadDeIngredientes=0;
     }
 
-    public Despensa(Ingrediente[] ingredientes) {
-        this.ingredientes = ingredientes;
+    public Despensa(Map<String, Despensable> despensables) {
+        this.despensables = despensables;
     }
+
+
+    public Map<String, Despensable> getDespensables() {
+        return despensables;
+    }
+
+    public void addDespensable(String nombre, Despensable despensable) {
+        despensables.put(nombre, despensable);
+    }
+
+    public void usarIngrediente(String nombre, int cantidad) throws StockAgotadoException {
+        Cocinable cocinable = (Cocinable) despensables.get(nombre);
+        if (cocinable == null) {
+            throw new StockAgotadoException("No hay " + nombre + " en la despensa");
+        }
+        cocinable.consumir(cantidad);
+    }
+
     @Override
-    public String toString(){
-        String finalStr = "\n";
-        boolean error = true;
-        try {
-            for (Ingrediente ingredienteList:this.ingredientes) {
-                finalStr = finalStr + "\t\t"+ingredienteList.getNombre() + ": " + ingredienteList.getCantidad()+"\n";
-                error = true;
-            }
+    public String toString() {
+        return "Despensa{" + "despensables=" + despensables + '}';
+    }
 
+    public void usarUtensilio(String nombre, int cantidad) throws SinVidaUtilException {
+        Reutilizable reutilizable = (Reutilizable) despensables.get(nombre);
+        if (reutilizable == null) {
+            throw new SinVidaUtilException("No hay " + nombre + " en la despensa");
         }
-        catch (NullPointerException e){
-            if (!error){
-                System.out.println("No hay ingredientes");
-            }
-        }
+        ((Reutilizable) despensables.get(nombre)).usar(1);
+    }
 
-        return finalStr;
+    public Map<String, Integer> getIngredientes() {
+        // Filtrar solo ingredientes
+        return despensables.values().stream().filter(d -> d instanceof Cocinable) // Filtrar solo los objetos que implementan Cocinable
+                .collect(Collectors.toMap(Despensable::getNombre, Despensable::getCantidad)); // Recoger los resultados en un mapa donde el value es la cantidad
+    }
+
+    public int getCantidadIngrediente(String ingrediente) {
+        return this.despensables.get(ingrediente).getCantidad();
+    }
+
+    public int getVidaUtilUtensilio(String utensilio) {
+        Reutilizable reutilizable = (Reutilizable) despensables.get(utensilio);
+        return reutilizable.getVidaUtil();
+    }
+
+    public Map<String, Integer> getUtensilios() {
+        // Filtrar solo ingredientes
+        return despensables.values().stream().filter(d -> d instanceof Reutilizable).collect(Collectors.toMap(Despensable::getNombre, d -> ((Reutilizable) d).getVidaUtil()));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

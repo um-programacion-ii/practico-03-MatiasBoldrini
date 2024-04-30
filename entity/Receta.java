@@ -1,59 +1,44 @@
 package entity;
 
+import interfaces.Cocinable;
+import interfaces.Reutilizable;
+
+import java.util.Map;
+
 public class Receta {
-    private int tiempoCoccion;
-    private Ingrediente[] ingredientes = new Ingrediente[2];
+    private Integer tiempoCoccion;
+    private Map<String, Cocinable> ingredientes;
+    private Map<String, Reutilizable> utensilios;
     private String preparacion;
 
     public Receta() {
     }
 
-    public Receta(int tiempoCoccion, Ingrediente[] ingredientes, String preparacion) {
+
+    public Receta(Integer tiempoCoccion, Map<String, Cocinable> ingredientes, Map<String, Reutilizable> utensilios, String preparacion) {
         this.tiempoCoccion = tiempoCoccion;
         this.ingredientes = ingredientes;
+        this.utensilios = utensilios;
         this.preparacion = preparacion;
     }
 
-    public int getTiempoCoccion() {
-        return tiempoCoccion;
-    }
 
-    public void setTiempoCoccion(int tiempoCoccion) {
-        this.tiempoCoccion = tiempoCoccion;
-    }
-
-    public Ingrediente[] getIngredientes() {
+    public Map<String, Cocinable> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(Ingrediente[] ingredientes) {
-        this.ingredientes = ingredientes;
-    }
-
-    public String getPreparacion() {
-        return preparacion;
-    }
-
-    public void setPreparacion(String preparacion) {
-        this.preparacion = preparacion;
-    }
-    public String getIngredientesNames(){
-        String finalStr = "";
-        for (Ingrediente ingredienteList: this.ingredientes) {
-            if(ingredienteList != null){
-
-            finalStr += ingredienteList.getCantidad() + " " + ingredienteList.getNombre()+", ";
-            }
-        }
-        return finalStr;
-    }
     @Override
-    public String toString(){
-        String finalStr = this.getClass().getSimpleName() + "\n";
-        finalStr += "\tTiempo de cocción: " + this.tiempoCoccion+ " minutos \n";
-        finalStr += "\tIngredientes: " + this.getIngredientesNames() + "\n";
-        finalStr += "\tInstrucciones: " +this.preparacion;
-        return finalStr;
+    public String toString() {
+        return "Receta{" + "tiempoCoccion=" + tiempoCoccion + ", ingredientes=" + ingredientes + ", utensilios=" + utensilios + ", preparacion='" + preparacion + '\'' + '}';
+    }
+
+    public int getCantidadIngrediente(String ingrediente) {
+        return this.ingredientes.get(ingrediente).getCantidad();
+    }
+
+
+    public Map<String, Reutilizable> getUtensilios() {
+        return utensilios;
     }
 
 }
