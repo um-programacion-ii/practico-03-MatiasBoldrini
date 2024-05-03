@@ -8,16 +8,17 @@ import interfaces.Reutilizable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Despensa {
-    private Map<String, Despensable> despensables = new HashMap<>();
+    private Map<String, Despensable> despensables;
 
     public Despensa() {
     }
 
     public Despensa(Map<String, Despensable> despensables) {
-        this.despensables = despensables;
+        this.despensables = new HashMap<>(despensables);
     }
 
 

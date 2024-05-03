@@ -45,6 +45,7 @@ public class Ingrediente implements Cocinable {
 
     @Override
     public void consumir(int cantidad) throws StockAgotadoException {
+        System.out.println(System.identityHashCode(this));
         if (this.cantidad < cantidad) {
             throw new StockAgotadoException("Quisiste sacar más " + this.nombre + " (" + cantidad + ") del que hay en stock (" + this.cantidad + ")");
         }

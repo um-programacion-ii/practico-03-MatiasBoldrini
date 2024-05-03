@@ -1,27 +1,29 @@
 package service;
 
-import entity.Receta;
+import entity.*;
 import exceptions.SinVidaUtilException;
 import exceptions.StockAgotadoException;
+import interfaces.Despensable;
 
-public class Chef {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static javax.swing.UIManager.put;
+
+public class Chef implements Runnable {
     private String nombre;
     private int estrellasMichelin;
-    private CocinaService cocinaService;
+    private Map<String, Receta> recetas;
+    private Despensa despensa;
 
-    public Chef(String nombre, int estrellasMichelin, CocinaService cocinaService) {
+    public Chef(String nombre, int estrellasMichelin, Map<String, Receta> recetas, Despensa despensa) {
         this.nombre = nombre;
         this.estrellasMichelin = estrellasMichelin;
-        this.cocinaService = cocinaService;
+        this.recetas = recetas;
+        this.despensa = despensa;
     }
 
-    public Chef() {
-    }
-
-
-    public CocinaService getCocinaService() {
-        return cocinaService;
-    }
 
     public String getNombre() {
         return nombre;
@@ -41,18 +43,23 @@ public class Chef {
 
     public void prepararReceta(Receta receta) {
         try {
-            System.out.println("Preparando receta: " + receta.getClass().getSimpleName());
-            DespensaService despensaService = new DespensaService(this);
-            cocinaService.verificarIngredientes(receta);
-            despensaService.verificarUtensilios(receta);
-            despensaService.usarUtensilios(receta);
-            cocinaService.cocinar(receta);
-            System.out.println("RECETA PREPARADA");
-            System.out.println("Ingredientes: " + cocinaService.getDespensa().getIngredientes());
-            System.out.println("Utensilios: " + cocinaService.getDespensa().getUtensilios());
+            CocinaService cocinaService = CocinaService.getInstance(this.despensa).clone();
+            DespensaService despensaService = new DespensaService(this.despensa);
+            if (cocinaService.verificarIngredientes(receta, this.getNombre())) {
+                despensaService.verificarUtensilios(receta);
+                despensaService.usarUtensilios(receta);
+                cocinaService.setDespensa(despensa);
+                cocinaService.cocinar(receta);
+            }
         } catch (StockAgotadoException | SinVidaUtilException e) {
             throw new RuntimeException(e);
         }
     }
 
+    @Override
+    public void run() {
+        for (Receta receta : recetas.values()) {
+            prepararReceta(receta);
+        }
+    }
 }

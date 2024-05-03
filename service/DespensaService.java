@@ -8,10 +8,10 @@ import interfaces.Reutilizable;
 import java.util.Set;
 
 public class DespensaService {
-    Chef chef;
+    Despensa despensa;
 
-    public DespensaService(Chef chef) {
-        this.chef = chef;
+    public DespensaService(Despensa despensa) {
+        this.despensa = despensa;
     }
 
     public void renovarUtensilios(String utensilio) {
@@ -20,8 +20,8 @@ public class DespensaService {
 
     public void verificarUtensilios(Receta receta) throws SinVidaUtilException {
         for (Reutilizable utensilio : receta.getUtensilios().values()) {
-            Despensa despensa = this.chef.getCocinaService().getDespensa();
-            Set<String> utensiliosDespensa = despensa.getUtensilios().keySet();
+
+            Set<String> utensiliosDespensa = this.despensa.getUtensilios().keySet();
             if (!utensiliosDespensa.contains(utensilio.getNombre())) {
                 throw new SinVidaUtilException("No hay " + utensilio.getNombre() + " en la despensa");
             }
@@ -33,8 +33,7 @@ public class DespensaService {
 
     public void usarUtensilios(Receta receta) throws SinVidaUtilException {
         for (Reutilizable utensilio : receta.getUtensilios().values()) {
-            Despensa despensa = this.chef.getCocinaService().getDespensa();
-            despensa.usarUtensilio(utensilio.getNombre(), utensilio.getVidaUtil());
+            this.despensa.usarUtensilio(utensilio.getNombre(), utensilio.getVidaUtil());
         }
     }
 
